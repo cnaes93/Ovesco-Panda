@@ -1,7 +1,7 @@
 # Ovesco-Panda
 
 
-Um Roboter mit der Kamera-Position zu steuern, muss man deise Files gleichzeitig laufen lassen.
+Um den Roboter mit der Kamera-Position zu steuern, muss man deise Files gleichzeitig laufen lassen.
 
 . 
 |

@@ -52,19 +52,19 @@ TischBereit = True
 def callback_Tisch_Subscriber(msg):
     global TischBereit
     if msg.data is True:
-        print('Tisch ist Bereit ... !!!')
+       # print('Tisch ist Bereit ... !!!')
         return (TischBereit)
 
 def callback_AbholBereit_Subscriber(msg):
     global AbholBereit
     if msg.data is True:
-        print('Roboter ist bereit, um das Objekt abzuholen!')
+        #print('Roboter ist bereit, um das Objekt abzuholen!')
         return (AbholBereit)
 
 
 
 
-def callback_RobotBereit_Subscriber():
+def callback_RobotBereit_Subscriber(msg):
     global i, TischBereit, AbholBereit, RobotBereit
     rospy.loginfo("Kamera Objekterkennung gestartet")
     pub = rospy.Publisher("/lageTeil", Vector3, queue_size=10)
@@ -131,9 +131,9 @@ def callback_RobotBereit_Subscriber():
                     end_result[1, 4], 'mit Confidence:', end_result[1, 5])
                 print('Angle of rotation:', winkel)
                 chos_i = os.path.join(dirname,'runs/detect/exp%d/photo.jpg' % i)
-                tools.plot_chosen(chos_i, end_result, 640, 480)
+# Zeig das Foto                #tools.plot_chosen(chos_i, end_result, 640, 480)
 
-                input("Press Enter to continue...")
+                #input("Press Enter to continue...")
 
         # press ur sim first!!
 
@@ -141,16 +141,21 @@ def callback_RobotBereit_Subscriber():
                 print(x,y,winkel)
                 #while not rospy.is_shutdown():
                 counter =0
-                while counter <15:
+                while counter <10:
+                #while RobotBereit:
 
-                    msg = Vector3(x, y, z)
+                    msg = Vector3(x, y, winkel)
                     pub.publish(msg)
                     rate.sleep()
                     counter +=1
 
         #control_rob.run('192.168.4.193',x,y,z)
 
-                input("Press Enter to continue...")
+                #input("Press Enter to continue...")
+                #if TischBereit and AbholBereit and RobotBereit: 
+                 #   continue
+                #else:
+                #    rospy.sleep(2)
 
 
             print('New Photo')
@@ -158,13 +163,9 @@ def callback_RobotBereit_Subscriber():
             
 
 def main():
-    global RobotBereit, TischBereit
+    global TischBereit
     while True:
-        print('Kamera läuft...!!!')
-        # Publish topic: /RoboterBereit   --> True / False
-        Roboter_Zustand(RobotBereit)        # publiziert ständig, dass der Roboter bereit ist oder nicht (True / False)
-        # Publish topic: /TeilAbholBereit --> True / False
-        Abholung_Zustand(AbholBereit)       # publiziert ständig, dass das Objekt abgohlt ist oder nicht (True / False)
+        #print('Kamera läuft...!!!')
         # Publish topic: /VibTisch        --> True / False
         Tisch_Zustand(TischBereit)          # publiziert ständig, dass der Tisch bereit ist oder nicht (True / False)
          

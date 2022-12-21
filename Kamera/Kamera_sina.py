@@ -14,10 +14,10 @@ import torch
 import os
 from IPython.display import Image, clear_output, display
 import sys
-sys.path.insert (1, '/home/sina/catkin_ws/src/panda_controllers/scripts/Nodes/Robot_Bereit')
-from RobotBereitPub import Roboter_Zustand
-sys.path.insert (2, '/home/sina/catkin_ws/src/panda_controllers/scripts/Nodes/Teil_Abholung')
-from TeilAbholungPub import Abholung_Zustand
+#sys.path.insert (1, '/home/sina/catkin_ws/src/panda_controllers/scripts/Nodes/Robot_Bereit')
+#from RobotBereitPub import Roboter_Zustand
+#sys.path.insert (2, '/home/sina/catkin_ws/src/panda_controllers/scripts/Nodes/Teil_Abholung')
+#from TeilAbholungPub import Abholung_Zustand
 sys.path.insert (3, '/home/sina/catkin_ws/src/panda_controllers/scripts/Nodes/Vibrationstisch')
 from VibTischPub import Tisch_Zustand
 from std_msgs.msg import Bool
@@ -65,12 +65,15 @@ def callback_AbholBereit_Subscriber(msg):
 
 
 def callback_RobotBereit_Subscriber(msg):
-    global i, TischBereit, AbholBereit, RobotBereit
+    global i, TischBereit, RobotBereit
     rospy.loginfo("Kamera Objekterkennung gestartet")
     pub = rospy.Publisher("/lageTeil", Vector3, queue_size=10)
     rate = rospy.Rate(1)
     while True:
-        if TischBereit and AbholBereit and RobotBereit: 
+        msg = rospy.wait_for_message("TeilAbholbereit",Bool, timeout=5)
+        AbholBereit =msg.data
+        print('AbholBereit')
+        if TischBereit and AbholBereit: 
 
             i += 1
 
@@ -100,7 +103,7 @@ def callback_RobotBereit_Subscriber(msg):
             except IOError:
         # error will be thrown if there is no correct component -> no file to open
                 print('Kein richtiges Teil entdeckt')
-                TischBereit = False
+                #TischBereit = False
 
             while np.any(teil):
 
@@ -115,7 +118,7 @@ def callback_RobotBereit_Subscriber(msg):
                 except Exception as e:
             # error will be thrown if there is no matching nose & returns to take_photo
                     print(str(e))
-                    TischBereit = False
+                    #TischBereit = False
                     break
 
         # computes angle of rotation
@@ -131,13 +134,14 @@ def callback_RobotBereit_Subscriber(msg):
                     end_result[1, 4], 'mit Confidence:', end_result[1, 5])
                 print('Angle of rotation:', winkel)
                 chos_i = os.path.join(dirname,'runs/detect/exp%d/photo.jpg' % i)
-# Zeig das Foto                #tools.plot_chosen(chos_i, end_result, 640, 480)
+# Zeig das Foto                #
+                #tools.plot_chosen(chos_i, end_result, 2560, 1920)
 
                 #input("Press Enter to continue...")
 
         # press ur sim first!!
 
-                x,y,z = tools.trans_coor(chosen,640,480,400,203)
+                x,y,z = tools.trans_coor(chosen,2560, 1920,400,203) #640,480,400,203)
                 print(x,y,winkel)
                 #while not rospy.is_shutdown():
                 counter =0
@@ -155,7 +159,7 @@ def callback_RobotBereit_Subscriber(msg):
                 #if TischBereit and AbholBereit and RobotBereit: 
                  #   continue
                 #else:
-                #    rospy.sleep(2)
+                rospy.sleep(10)
 
 
             print('New Photo')
@@ -178,8 +182,8 @@ if __name__ == '__main__':
     
     rospy.init_node('QKam_Test', anonymous=True)
     #Objektinfo aus der Kamera-Node abboniert -> Roboter fährt zu der Position
-    sub = rospy.Subscriber("/VibTisch", Bool, callback_Tisch_Subscriber)
-    sub = rospy.Subscriber("/VibTisch", Bool, callback_AbholBereit_Subscriber)
+    #sub = rospy.Subscriber("/VibTisch", Bool, callback_Tisch_Subscriber)
+    sub = rospy.Subscriber("/TeilAbholbereit", Bool, callback_AbholBereit_Subscriber)
     sub = rospy.Subscriber("/RobotBereit", Bool, callback_RobotBereit_Subscriber)
     main()
-   
+  

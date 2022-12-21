@@ -31,7 +31,7 @@ from matplotlib import pyplot as plt
 
 def main2():
     chessboardSize = (20,14) #Anzahl der Quadrate
-    frameSize = (2560,1920)  #Große des Fotos
+    frameSize = (2560,1920)  #Größe des Fotos
 
 
 
@@ -43,7 +43,7 @@ def main2():
     objp = np.zeros((chessboardSize[0] * chessboardSize[1], 3), np.float32)
     objp[:,:2] = np.mgrid[0:chessboardSize[0],0:chessboardSize[1]].T.reshape(-1,2)
 
-    size_of_chessboard_squares_mm = 13.6   # Große der Quadrate, was ich ausgedruckt habe..
+    size_of_chessboard_squares_mm = 13.6   # Größe der Quadrate, was ich ausgedruckt habe..
     objp = objp * size_of_chessboard_squares_mm
 
 

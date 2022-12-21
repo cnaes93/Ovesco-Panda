@@ -29,15 +29,20 @@ from base64 import b64decode
 
 from picamera2 import Picamera2, Preview
 #import time
+picam2 = Picamera2()
+# 2560, 1920 max:2592, 1944
+camera_config = picam2.create_still_configuration(main={"size": (2560, 1920)}) #{"size": (640, 480)})
+picam2.configure(camera_config)
 def take_photo():
-    picam2 = Picamera2()
+    
     #camera_config = picam2.create_still_configuration(main={"size": (1920, 1080)}, lores={"size": (640, 480)}, display="lores")
-    camera_config = picam2.create_still_configuration(main={"size": (640, 480)})
-    picam2.configure(camera_config)
+    
+    
     #picam2.start_preview(Preview.QTGL)
     picam2.start()
     time.sleep(2)
     picam2.capture_file("photo.jpg")
+    picam2.stop()
     #time.sleep(10)
 
 
@@ -65,7 +70,7 @@ def take_photo1():
 
         # Fenster offen lassen und auf Tasteneingabe warten
         k = cv2.waitKey(1)
-        # Wenn ESC gedrückt wird:
+        # Wenn ESC gedrückt wird: 
         if k % 256 == 27:# das beduetet soviel wie "wenn esc gedrückt wird". warum das dass bedeutet...ka.
             # ESC pressed
             print("Escape hit, closing...")
@@ -160,6 +165,7 @@ def calcIOU(x1, y1, w1, h1, x2, y2, w2, h2):
     if ((abs(x1 - x2) < ((w1 + w2) / 2.0)) and (abs(y1 - y2) < ((h1 + h2) / 2.0))):
         left = max((x1 - (w1 / 2.0)), (x2 - (w2 / 2.0)))
         upper = max((y1 - (h1 / 2.0)), (y2 - (h2 / 2.0)))
+
 
         right = min((x1 + (w1 / 2.0)), (x2 + (w2 / 2.0)))
         bottom = min((y1 + (h1 / 2.0)), (y2 + (h2 / 2.0)))
@@ -377,8 +383,14 @@ def plot_chosen(img, end_result, pix_x, pix_y):
 
     plt.figure(figsize=(12, 16))
     plt.imshow(image)
-    plt.show()
+    ###########################################
+    #plt.show()
+    plt.draw()
+    plt.pause(10)
+    plt.close()
 
+
+    ###########################################
     # return image
 
 

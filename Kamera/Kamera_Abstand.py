@@ -107,7 +107,7 @@ def callback_RobotBereit_Subscriber(msg):
             
  #######################################################################################################################           
             # object detection with chosen weights -> label index 2: nose, label index 3: component
-            photo = os.path.join(dirname,'FinalCalibratedPhoto.jpg.jpg')
+            photo = os.path.join(dirname,'FinalCalibratedPhoto.jpg')
             #photo = os.path.join(dirname,'photo.jpg')
             detect.run(source=photo, weights=weights, imgsz=1280, conf_thres=0.5, save_txt=True, save_conf=True,
                     classes=[0,1,2, 3], line_thickness=1)
@@ -123,10 +123,16 @@ def callback_RobotBereit_Subscriber(msg):
         # error will be thrown if there is no correct component -> no file to open
                 print('Kein richtiges Teil entdeckt')
                 #TischBereit = False
-
+    
             SpeichernsPfad = os.path.join(dirname,'runs/detect/exp%d/labels/'  % i )
-            tools.Distanz_Check(teil_Input,Abstand=0.09,SpeichernsPfad)
-            
+            #print(SpeichernsPfad)
+            Abstand = 0.09
+            #print(Abstand)
+            #print(teil_Input)
+            AusgangMatrix=tools.Distanz_Check( SpeichernsPfad)
+            #print(AusgangMatrix)
+            PathToSave= os.path.join(dirname,'runs/detect/exp%d/labels/AusgangMatrix.txt'  % i )
+            np.savetxt(PathToSave,AusgangMatrix)
             try:
                 Foto_i = os.path.join(dirname,'runs/detect/exp%d/labels/AusgangMatrix.txt'  % i )
                 
@@ -167,7 +173,7 @@ def callback_RobotBereit_Subscriber(msg):
                     end_result[1, 4], 'mit Confidence:', end_result[1, 5])
                 print('Angle of rotation:', winkel)
                 chos_i = os.path.join(dirname,'runs/detect/exp%d/FinalCalibratedPhoto.jpg' % i)
-# Zeig das Foto                #
+# Aufzeichnen des Bilds                #
                 #tools.plot_chosen(chos_i, end_result, 2560, 1920)
 
                 #input("Press Enter to continue...")

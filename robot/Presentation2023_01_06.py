@@ -58,19 +58,52 @@ X_SOLL_3 = 0.22         # X vom Punkt 3 in SolidWorks
 Y_SOLL_3 = 0.54         # Y vom Punkt 3 in SolidWorks
 X_SOLL_4 = 0.56         # X vom Punkt 4 in SolidWorks
 Y_SOLL_4 = 0.54         # Y vom Punkt 4 in SolidWorks
+# Postion der 4 Punkte auf der Platte aus der Kamera
+X_CAM_1 = 0.270750677083        # X vom Punkt 1 in Kamera
+Y_CAM_1 = 0.04171875        # Y vom Punkt 1 in Kamera
+X_CAM_2 = 0.391686979167         # X vom Punkt 2 in Kamera
+Y_CAM_2 = 0.0425         # Y vom Punkt 2 in Kamera
+X_CAM_3 = 0.2078239583         # X vom Punkt 3 in Kamera
+Y_CAM_3 = 0.36046875         # Y vom Punkt 3 in Kamera
+X_CAM_4 = 0.39052395833         # X vom Punkt 4 in Kamera
+Y_CAM_4 = 0.3596875         # Y vom Punkt 4 in Kamera
 
 # Abwichung (Error) zwischen ISt-, und Sollwert in X-Richtung
-Q_X_1 = X_Ist_1 - X_SOLL_1  # Error vom Punkt 1 in X-Richtung
-Q_X_2 = X_Ist_2 - X_SOLL_2  # Error vom Punkt 2 in X-Richtung
-Q_X_3 = X_Ist_3 - X_SOLL_3  # Error vom Punkt 3 in X-Richtung
-Q_X_4 = X_Ist_4 - X_SOLL_4  # Error vom Punkt 4 in X-Richtung
+Q_X_1 = X_SOLL_1 - X_Ist_1 # Error vom Punkt 1 in X-Richtung
+Q_X_2 = X_SOLL_2 - X_Ist_2  # Error vom Punkt 2 in X-Richtung
+Q_X_3 = X_SOLL_3 - X_Ist_3  # Error vom Punkt 3 in X-Richtung
+Q_X_4 = X_SOLL_4 - X_Ist_4  # Error vom Punkt 4 in X-Richtung
 
 # Abwichung (Error) zwischen ISt-, und Sollwert in Y-Richtung
-Q_Y_1 = Y_Ist_1 - Y_SOLL_1     # Error vom Punkt 1 in Y-Richtung
-Q_Y_2 = Y_Ist_2 - Y_SOLL_2     # Error vom Punkt 2 in Y-Richtung
-Q_Y_3 = Y_Ist_3 - Y_SOLL_3    # Error vom Punkt 3 in Y-Richtung
-Q_Y_4 = Y_Ist_4 - Y_SOLL_4     # Error vom Punkt 4 in Y-Richtung
+Q_Y_1 = Y_SOLL_1 - Y_Ist_1     # Error vom Punkt 1 in Y-Richtung
+Q_Y_2 = Y_SOLL_2 - Y_Ist_2     # Error vom Punkt 2 in Y-Richtung
+Q_Y_3 = Y_SOLL_3 - Y_Ist_3   # Error vom Punkt 3 in Y-Richtung
+Q_Y_4 = Y_SOLL_4 - Y_Ist_4     # Error vom Punkt 4 in Y-Richtung
 
+# Abwichung (Error) zwischen ISt-, und Sollwert in X-Richtung
+# E_X_1 =  X_Ist_1 - X_CAM_1 # Error vom Punkt 1 in X-Richtung
+# E_X_2 =  X_Ist_2 - X_CAM_2 # Error vom Punkt 2 in X-Richtung
+# E_X_3 =  X_Ist_3 - X_CAM_3  # Error vom Punkt 3 in X-Richtung
+# E_X_4 =  X_Ist_4 - X_CAM_4  # Error vom Punkt 4 in X-Richtung
+
+# # Abwichung (Error) zwischen ISt-, und Sollwert in Y-Richtung
+# E_Y_1 = Y_Ist_1 - Y_CAM_1   # Error vom Punkt 1 in Y-Richtung
+# E_Y_2 = Y_Ist_2 - Y_CAM_2     # Error vom Punkt 2 in Y-Richtung
+# E_Y_3 = Y_Ist_3 - Y_CAM_3   # Error vom Punkt 3 in Y-Richtung
+# E_Y_4 = Y_Ist_4 - Y_CAM_4     # Error vom Punkt 4 in Y-Richtung
+
+# Abwichung (Error) zwischen ISt-, und Sollwert in X-Richtung
+E_X_1 = -0.01      # Error vom Punkt 1 in X-Richtung
+E_X_2 = 0.0025           # Error vom Punkt 2 in X-Richtung
+E_X_3 = 0.0008       # Error vom Punkt 3 in X-Richtung
+E_X_4 = 0.0115      # Error vom Punkt 4 in X-Richtung
+
+# Abwichung (Error) zwischen ISt-, und Sollwert in Y-Richtung
+E_Y_1 = 0.0009      # Error vom Punkt 1 in Y-Richtung
+E_Y_2 = -0.0029      # Error vom Punkt 2 in Y-Richtung
+E_Y_3 = 0.005       # Error vom Punkt 3 in Y-Richtung
+E_Y_4 = -0.0030     # Error vom Punkt 4 in Y-Richtung
+ 
 
 ##############################################
 RobotBereit = True
@@ -102,32 +135,42 @@ def main():
         # y0 = msg.y * (1.313444207879) + 0.249837381024666
         # x0_K =  (msg.y * 1.17232860067279 + 0.221199472843068) 
         # y0_K= (msg.x * (-2.08011195043537) + 0.217292574197138 ) 
-        x0_K =  (msg.y * 1.83025817777428 - 0.163274181981893) 
-        y0_K= (msg.x * (1.26858275520317) + 0.343567888999009)
+        x0_K =  (msg.x * 1.81287133447629 - 0.148708096619466) 
+        y0_K= (msg.y * (1.27084815724816) + 0.075388953316953)
+        #x0_K =  msg.x
+        #y0_K= msg.y 
         z0 = 0.20
-        WinkelKamera = msg.z + 45 #- 90     # Null Richtung bei echtem Roboter ist im 45 grad definiert.
+        print('X, Y Ohne Interpolation:',x0_K,y0_K)
+        WinkelKamera = msg.z - 45 #- 90     # Null Richtung bei echtem Roboter ist im 45 grad definiert.
         if WinkelKamera < -135:          # WinkelKamera: Bereich vom Winkel der Nase aus der Kamera-Node ist von 0 bis 360° -->Verteilen in: [-180, 0] und [0, 180]
-            WinkelKamera= -(360 + WinkelKamera -45)
+            WinkelKamera= -(360 + WinkelKamera +45)
         else:
             WinkelKamera = WinkelKamera
         #######################################################################################################
     ###########################################################################################################
     # Berechnung der Bilinear-Interpolation-Gleichung zur Kalibrierung des Roboters
-        X_Matrix = np.array([X_SOLL_4 - x0 , x0 - X_SOLL_1])
-        Y_Matrix = np.array([Y_SOLL_4 - y0], [y0 - Y_SOLL_1])
-        E_Matrix_X = np.array([Q_X_1 , Q_X_2], [Q_X_3 , Q_X_4])
-        E_Matrix_Y = np.array([Q_Y_1 , Q_Y_2], [Q_Y_3 , Q_Y_4])
-        F_x = (1/((X_SOLL_4 - X_SOLL_1)*(Y_SOLL_4 - Y_SOLL_1))) * (X_Matrix.dot(E_Matrix_X.dot(Y_Matrix)))
-        F_y = (1/((X_SOLL_4 - X_SOLL_1)*(Y_SOLL_4 - Y_SOLL_1))) * (X_Matrix.dot(E_Matrix_Y.dot(Y_Matrix)))
-        x0  = x0_K + F_x
-        y0  = y0_K + F_y
+        # X_Matrix = np.array([X_SOLL_4 - x0_K , x0_K - X_SOLL_1])
+        # Y_Matrix = np.array([[Y_SOLL_4 - y0_K], [y0_K - Y_SOLL_1]])
+        # E_Matrix_X = np.array([[Q_X_1 , Q_X_2], [Q_X_3 , Q_X_4]])
+        # E_Matrix_Y = np.array([[Q_Y_1 , Q_Y_2], [Q_Y_3 , Q_Y_4]])
+        # F_x = (1/((X_SOLL_4 - X_SOLL_1)*(Y_SOLL_4 - Y_SOLL_1))) * (X_Matrix.dot(E_Matrix_X.dot(Y_Matrix)))
+        # F_y = (1/((X_SOLL_4 - X_SOLL_1)*(Y_SOLL_4 - Y_SOLL_1))) * (X_Matrix.dot(E_Matrix_Y.dot(Y_Matrix)))
+        X_Matrix = np.array([X_Ist_4 - x0_K , x0_K - X_Ist_1])
+        Y_Matrix = np.array([[Y_Ist_4 - y0_K], [y0_K - Y_Ist_1]])
+        E_Matrix_X = np.array([[E_X_1 , E_X_3], [E_X_2 , E_X_4]])
+        E_Matrix_Y = np.array([[E_Y_1 , E_Y_3], [E_Y_2 , E_Y_4]])
+        F_x = (1/((X_Ist_4 - X_Ist_1)*(Y_Ist_4 - Y_Ist_1))) * (X_Matrix.dot(E_Matrix_X.dot(Y_Matrix)))
+        F_y = (1/((X_Ist_4 - X_Ist_1)*(Y_Ist_4 - Y_Ist_1))) * (X_Matrix.dot(E_Matrix_Y.dot(Y_Matrix)))
+        print('Error in X und Y Richtung:',F_x,F_y)
+        x0  = float(x0_K + F_x)
+        y0  = float(y0_K + F_y)
     ############################################################################################################
-        print(x0,y0)
+        print('Kalibrierte Position:',x0,y0)
         quotientLoeschen = y0/x0# 
-        print(quotientLoeschen)# 
+        #print(quotientLoeschen)# 
         Theta = math.atan(quotientLoeschen)
-        print(Theta)
-        print(x0,y0,WinkelKamera)
+        #print(Theta)
+        #print(x0,y0,WinkelKamera)
         go_home()
         go_home_joints()
         RobotBereit = False
@@ -142,7 +185,7 @@ def main():
         go_to_pose_goal(x0, y0, z3, v=0.05, a=0.01, W=quad[0], Roll=quad[1],Pitch= quad[2], Yaw=quad[3])
 
         #go_to_position(x0, y0, z3, v=0.1, a=0.1)
-        go_to_position(x0, y0, z3-0.02, v=0.05, a=0.005)
+        go_to_position(x0, y0, z3-0.024, v=0.05, a=0.005)
 
         print('Roboter ist an der Objekt-Position')
 
